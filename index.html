@@ -4,26 +4,21 @@
 <title>SVG to PNG Image Converter</title>
 <style>
 #drop {
-	border:5px solid #000;
+	border:15px solid rgba(128,0,128,0.5);
+	margin-bottom:20px;
+	padding:10px;
+}
+#drop-2 {
+	border:5px dotted rgba(128,0,255,0.7);
 	margin-bottom:20px;
 	padding:10px;
 }
 </style>
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-941940-28']);
-  _gaq.push(['_trackPageview']);
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-</script>
 </head>
 <body>
 	<h1>Drag and Drop SVG to PNG Conversion</h1>
-	<p>Drop any SVG and get a PNG image download all on the client side. <a href="http://techslides.com/save-svg-as-an-image/">Back to Article</a></p>
+	<p>Drop any SVG and get a PNG image download all on the client side. <br><a style="font-size:8px; font-family: sans-serif; color: rgba(0,0,200,0.8)" href="http://techslides.com/save-svg-as-an-image/">Source.</a></p>
 <div id="drop">
 	DROP!<button onclick="document.querySelector('input').click()">Or Select</button>
 	<input style="visibility: collapse; width: 0px;" type="file" onchange="upload(this.files[0])">
