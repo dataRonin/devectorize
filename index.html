@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SVG to PNG Image Converter</title>
+<style>
+#drop {
+	border:5px solid #000;
+	margin-bottom:20px;
+	padding:10px;
+}
+</style>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-941940-28']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+<body>
+	<h1>Drag and Drop SVG to PNG Conversion</h1>
+	<p>Drop any SVG and get a PNG image download all on the client side. <a href="http://techslides.com/save-svg-as-an-image/">Back to Article</a></p>
+<div id="drop">
+	DROP!<button onclick="document.querySelector('input').click()">Or Select</button>
+	<input style="visibility: collapse; width: 0px;" type="file" onchange="upload(this.files[0])">
+</div>
+
+
+
+<canvas id="canvas" style="display:none"></canvas>
+<img id="image" style="clear:both;display:none;">
+
+<script type="text/javascript">
+
+var v = document.getElementById("image");
+
+    /* Drag drop stuff */
+    window.ondragover = function(e) {e.preventDefault()}
+    window.ondrop = function(e) {
+	    e.preventDefault();
+	    console.log("Reading...");
+	    var length = e.dataTransfer.items.length;
+	    if(length > 1){
+	    	console.log("Please only drop 1 file.");
+	    } else {
+	    	upload(e.dataTransfer.files[0]);
+	    }
+	}
+
+    /* main upload function */
+    function upload(file) {
+    	if(file.type.match(/image\/*/)){
+	    	oFReader = new FileReader();
+	        oFReader.onloadend = function() {
+
+	        	var blob = new Blob([this.result], {type: file.type});
+	        	var url = URL.createObjectURL(blob);
+
+				var image = new Image;
+				image.src = url;
+				image.onload = function() {
+
+					var canvas = document.querySelector("canvas");
+					canvas.width = image.width;
+					canvas.height = image.height;
+					
+					var context = canvas.getContext("2d");
+								
+				  context.drawImage(image, 0, 0);
+
+				  var a = document.createElement("a");
+				  a.download = "image.png";
+				  a.href = canvas.toDataURL("image/png");		  
+				  a.click();
+
+	        	  v = document.getElementById("image");
+	        	  v.src = a.href
+	        	  v.style.display = "block";
+
+
+				};
+
+
+
+	        };
+	        oFReader.readAsArrayBuffer(file);
+        } else {
+        	console.log("This file does not seem to be an SVG image.");
+        }
+    }
+</script>
+</body>
+</html>
