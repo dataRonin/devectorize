@@ -2,11 +2,103 @@
 <html>
 <head>
 <title>SVG to PNG Image Converter</title>
+</head>
 <style>
+header, body {
+	font-family: 'Shadows Into Light', cursive;
+}
 #drop {
-	border:15px solid rgba(128,0,128,0.5);
+	border:15px dotted rgba(128,0,128,0.5);
 	margin-bottom:20px;
-	padding:10px;
+	padding:20px;
+	margin-top:30px;
+}
+.flexible {
+	display: flex;
+	flex-flow:row wrap;
+	justify-content:space-around;
+	align-items:center;
+	max-width: 90%;
+	max-height: 90%;
+}
+.vflexible {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-around;
+	align-items:center;
+}
+.switch {
+  font-family: sans-serif;
+  position: relative;
+  margin: 20px auto;
+  height: 30px;
+  width: 120px;
+  background-image: -webkit-linear-gradient(hsla(0,0%,0%,.1), hsla(0,0%,100%,.1)), -webkit-linear-gradient(left, #82c874 50%, #d95044 50%);
+  border-radius: 3px;
+  box-shadow: inset 0 1px 4px hsla(0,0%,0%,.5), inset 0 0 10px hsla(0,0%,0%,.5);
+}
+
+.switch-label {
+  position: relative;
+  z-index: 2;
+  float: left;
+  width: 58px;
+  line-height: 30px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.switch-label:active { font-weight: bold; }
+.switch-label-off { padding-left: 2px; }
+.switch-label-on { padding-right: 2px; }
+.switch-input { display: none; }
+
+.switch-input:checked + .switch-label {
+  font-weight: normal;
+  color: #fff;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.3);
+  -webkit-transition: 0.15s ease-out;
+  -moz-transition: 0.15s ease-out;
+  -o-transition: 0.15s ease-out;
+  transition: 0.15s ease-out;
+}
+.switch-input:checked + .switch-label-on ~ .switch-selection {
+  left: 60px;
+  border-radius: 0 3px 3px 0;
+  /* Note: left: 50% doesn't transition in WebKit */
+}
+
+.switch-selection {
+  display: block;
+  position: absolute;
+  z-index: 10;
+  top: 0px;
+  left: 0px;
+  width: 58px;
+  height: 28px;
+  background: #c9c9c9;
+  border: 1px solid #999;
+  border-radius: 3px 0 0 3px;
+  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 0, 0, 0.2);
+  -webkit-transition: left 0.15s ease-out;
+  -moz-transition: left 0.15s ease-out;
+  -o-transition: left 0.15s ease-out;
+  transition: left 0.15s ease-out;
+  pointer-events: none;
+}
+
+p { margin-left: 30px; word-spacing: 30px; }
+#info {
+	font-size:16px;
+	max-width:80%;
+	padding: 12px;
+	text-align:center;
+	padding-bottom:20px;
 }
 #drop-2 {
 	border:5px dotted rgba(128,0,255,0.7);
@@ -14,25 +106,67 @@
 	padding:10px;
 }
 </style>
+<link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light" rel="stylesheet">
+<script>
+var validate=function(evt) {
+  var theEvent = evt || window.event;
+  var key = theEvent.keyCode || theEvent.which;
+  key = String.fromCharCode( key );
+  var regex = /[0-9]|\./;
+  if( !regex.test(key) ) {
+    theEvent.returnValue = false;
+    if(theEvent.preventDefault) theEvent.preventDefault();
+  }
+}
+</script>
+<body class="vflexible">
+	<header>
+  	<h1 class="hflexible" style="width:50%"> DeVectorizer</h1>
+  	<!--<img src="mdn-logo-sm.png" alt="MDN logo">-->
+	</header>
+	<div id="container" class="vflexible">
+	<div id="info" class="flexible"> Drag and drop your SVG to the dotted box and see it below. Optional: Input a new width or height as integers below before dropping in to change the image dimensions prior to save.
 
-</head>
-<body>
-	<h1>Drag and Drop SVG to PNG Conversion</h1>
-	<p>Drop any SVG and get a PNG image download all on the client side. <br><a style="font-size:8px; font-family: sans-serif; color: rgba(0,0,200,0.8)" href="http://techslides.com/save-svg-as-an-image/">Source.</a></p>
-<div id="drop">
-	DROP!<button onclick="document.querySelector('input').click()">Or Select</button>
-	<input style="visibility: collapse; width: 0px;" type="file" onchange="upload(this.files[0])">
-</div>
+	<div id="drop" class="vflexible">
+		<div id="space" style="height:20px;"></div>
+		<div class="flexible" style="margin:10%; font-size:48px;">DROP!</div>
+		<div style="height:20px"></div>
+		<button onclick="document.querySelector('input').click()">Or Select</button>
+		<input style="visibility: collapse; width: 0px;" type="file" onchange="upload(this.files[0])">
+	</div>
+	<div id="space" style="height:100px">
 
+	<div id="heighter">
+		<label for="heighther">New Height (px)</label>
+		<input type='text' onkeypress='validate(event)' />
+	</div>
+	<div id="widther">
+		<label for="widther">New Width (px)</label>
+		<input type='text' onkeypress='validate(event)' />
+	</div>
+	</div>
+	</div>
+	
+	<div>
 
 
 <canvas id="canvas" style="display:none"></canvas>
 <img id="image" style="clear:both;display:none;">
 
 <script type="text/javascript">
+var dwwidth=document.getElementById("widther").children[0].value;
+var dwheighter=document.getElementById("heighter").children[0].value;
+
+var width=window.innerWidth || 2;
+var height=window.innerHeight || 2;
+var container=document.getElementById("container");
+container.style.width=width;
+container.style.height=height;
+container.style.maxwidth=width;
+container.style.maxheight=height;
 
 var v = document.getElementById("image");
-
+	
     /* Drag drop stuff */
     window.ondragover = function(e) {e.preventDefault()}
     window.ondrop = function(e) {
@@ -59,28 +193,29 @@ var v = document.getElementById("image");
 				image.src = url;
 				image.onload = function() {
 
-					var canvas = document.querySelector("canvas");
-					canvas.width = image.width;
-					canvas.height = image.height;
+					var dwwidth=document.getElementById("widther").children[0].value;
+					var dwheighter=document.getElementById("heighter").children[0].value;
 					
+					var canvas = document.querySelector("canvas");
+					//canvas.width = image.width
+					canvas.width = dwwidth || image.width; 
+					canvas.height = dwheighter || image.height;
+										//canvas.height = image.height
 					var context = canvas.getContext("2d");
 								
-				  context.drawImage(image, 0, 0);
+				  context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
 				  var a = document.createElement("a");
 				  a.download = "image.png";
 				  a.href = canvas.toDataURL("image/png");		  
 				  a.click();
+				  
+				  
 
 	        	  v = document.getElementById("image");
 	        	  v.src = a.href
 	        	  v.style.display = "block";
-
-
 				};
-
-
-
 	        };
 	        oFReader.readAsArrayBuffer(file);
         } else {
